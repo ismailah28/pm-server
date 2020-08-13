@@ -1,7 +1,6 @@
 const createError = require('http-errors');
 const express = require('express');
 
-const errorHandler = require('./utils/error-handler');
 const setupMiddlewares = require('./config/middlewares');
 const indexRouter = require('./routes');
 
@@ -18,6 +17,17 @@ app.use((req, res, next) => {
 });
 
 // central error handler
-app.use(errorHandler);
+app.use((err, req, res, next) => {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  const { status = 500, message } = err;
+
+  res.status(status).json({
+    success: false,
+    message,
+  });
+});
 
 module.exports = app;

@@ -2,7 +2,28 @@ const debug = require('debug')('pm-server:server');
 const http = require('http');
 
 const app = require('./app');
-const { normalizePort } = require('./utils/normalize-port');
+
+/**
+ * Normalize a port into a number, string, or false.
+ * @param {string} - Port number
+ */
+const normalizePort = (val) => {
+  const port = parseInt(val, 10);
+
+  if (Number.isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+};
+
+module.exports = { normalizePort };
 
 /**
  * Get port from environment and store in Express.
