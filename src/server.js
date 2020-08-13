@@ -1,6 +1,5 @@
 const debug = require('debug')('pm-server:server');
 const http = require('http');
-require('dotenv').config();
 
 const app = require('./app');
 const { normalizePort } = require('./utils/normalize-port');
